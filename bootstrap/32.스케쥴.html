@@ -20,7 +20,7 @@
     <div class="container-fluid">
       <ul class="navbar-nav">
         <a class="navbar-brand mx-5" href="#">
-          <img src="img/ckworld_logo.png" alt="Logo" style="height: 36px;">
+          <img src="img/ck world.png" alt="Logo" style="height: 36px;">
         </a>
         <li class="nav-item ms-3">
           <a class="nav-link" href="#"><i class="fa-solid fa-table-list"></i> 게시판</a>
@@ -42,8 +42,14 @@
             <li><a class="dropdown-item" href="#">A third link</a></li>
           </ul>
         </li>
-        <li class="nav-item ms-3">
-          <a class="nav-link disabled" href="#"><i class="fa-solid fa-user-tie"></i> 관리자</a>
+        <li class="nav-item dropdown ms-3">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">자기소개</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">고향</a></li>
+              <li><a class="dropdown-item" href="#">좋아하는 음식</a></li>
+              <li><a class="dropdown-item" href="#">가봤던 곳</a></li>
+              <li><a class="dropdown-item" href="#">가보고싶은 곳</a></li>
+              <li><a class="dropdown-item" href="#">취미</a></li>
         </li>
         <li class="nav-item ms-3">
           <a class="nav-link" href="#"><i class="fa-solid fa-right-from-bracket"></i> 로그아웃</a>
@@ -56,7 +62,7 @@
   <div class="container" style="margin-top: 80px;">
     <div class="row" style="height: 1500px;">
       <div class="col-3" style="font-size: 0.9rem;">
-        <img src="img/빵빵이.jfif" alt="빵빵이" class="rounded-circle" style="width: 80%;">
+        <img src="img/겨울 나무.jfif" alt="겨울나무" class="rounded-circle" style="width: 80%;">
         <div class="mt-2">
           <span>오늘의 상태 메세지를 이 자리에 적습니다.</span>
           <a href="#"><span class="badge bg-secondary">수정</span></a>
@@ -344,7 +350,7 @@
               <label for="title" class="form-label">
                 일정명
                 <label class="form-check-label ms-5">
-                  <input class="form-check-input" type="checkbox" name="importance"><span class="ms-2">중요</span>
+                  <input class="form-check-input" type="checkbox" name="importance" checked><span class="ms-2">중요</span>
                 </label>
               </label>
               <input type="text" class="form-control" name="title" id="title" required>
