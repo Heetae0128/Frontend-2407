@@ -10,6 +10,7 @@
   <script src="https://kit.fontawesome.com/fdb840a8cc.js" crossorigin="anonymous"></script>
   <style>
     * { font-family: 'Noto Sans KR', sans-serif; }
+    p.big { line-height: 2.0;  }
     a { text-decoration: none; color: inherit; }
     th { text-align: center; width: 14.28%; }
 		td { height: 120px; }
@@ -33,23 +34,18 @@
         </li>
         <li class="nav-item dropdown ms-3">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-            <i class="fa-solid fa-brain"></i> 인공지능
+            <i class="fa-solid fa-brain"></i> 자기소개
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Link</a></li>
-            <li><a class="dropdown-item" href="#">Another link</a></li>
-            <li><hr class="dropdown-divider"></hr></li>
-            <li><a class="dropdown-item" href="#">A third link</a></li>
+            <li><a class="dropdown-item" href="#">고향</a></li>
+            <li><a class="dropdown-item" href="#">좋아하는 음식</a></li>
+            <li><a class="dropdown-item" href="#">가봤던 곳</a></li>
+            <li><a class="dropdown-item" href="#">가보고싶은 곳</a></li>
+            <li><a class="dropdown-item" href="#">취미</a></li>
           </ul>
         </li>
-        <li class="nav-item dropdown ms-3">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">자기소개</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">고향</a></li>
-              <li><a class="dropdown-item" href="#">좋아하는 음식</a></li>
-              <li><a class="dropdown-item" href="#">가봤던 곳</a></li>
-              <li><a class="dropdown-item" href="#">가보고싶은 곳</a></li>
-              <li><a class="dropdown-item" href="#">취미</a></li>
+        <li class="nav-item ms-3">
+          <a class="nav-link disabled" href="#"><i class="fa-solid fa-user-tie"></i> 관리자</a>
         </li>
         <li class="nav-item ms-3">
           <a class="nav-link" href="#"><i class="fa-solid fa-right-from-bracket"></i> 로그아웃</a>
@@ -323,7 +319,19 @@
           </tr>
         </table>
       </div>
-
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <h2>고향</h2>
+          <p class="big">저는 서울에서 태어났지만 가장 긴 시간을 보낸 지역이<br> 
+            공주입니다. 밤막걸리와 밤묵밥으로 아주 유명한 지역이죠!</p>
+      </div>
+      <div class="col-8">
+        <img src="img/공주지도.png" alt="map">
+      </div>
+      <div class="col-4">
+        <img src="/" alt="">
+      </div>
     </div>
   </div>
 
