@@ -23,7 +23,7 @@ console.log(favoriteFruits);
 // 1에서 10까지 곱한 값(10 factorial)
 let product = 1;
 for (let i = 1; i <= 10; i++)
-    prodct *= i;
+    product *= i;
 console.log(product);
 
 // 1에서 30까지 3의 배수의 배열 만들기 [3, 6, 9, ..., 30]

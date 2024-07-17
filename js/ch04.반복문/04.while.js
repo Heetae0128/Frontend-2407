@@ -18,5 +18,5 @@ while (sumDice <= 21) {
     diceArray.push(dice)
     sumDice += dice;
 }
-console.log(diceArray);
-console.log(sumDice);
+// console.log(diceArray);
+// console.log(sumDice);

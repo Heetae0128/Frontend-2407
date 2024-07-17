@@ -14,11 +14,11 @@ console.log(sumOdd);
 for (let i = 1; i <= 5; i++) {
     let line = '';    
     for (let k = 1; k <= 5; k++) {
-        // if (k == i)
-        //     continue;
-        line += k + ' ';
         if (k == i)
-            break;
+            // continue;
+        line += k + ' ';
+        // if (k == i)
+        //     break;
     }
     console.log(line);
 }
