@@ -9,12 +9,12 @@
     </style>
     <script>
         function drawDiamond() {
-            let num  = number(document.getElementById('num').value);
+            let num = Number(document.getElementById('num').value);
             let N = parseInt(num / 2);
             let diamond = '';
             for (let i = 0; i <= N; i++) {
                 let line = '';
-                for (let k = 0; k < N - i; k++)
+                for (let k = 0; k < N - i; k++) 
                     line += '&nbsp;';
                 for (let k = 0; k < 2 * i + 1; k++)
                     line += '*';
@@ -22,13 +22,13 @@
             }
             for (let i = N - 1; i >= 0; i--) {
                 let line = '';
-                for (let k = 0; k < N - i; k++)
+                for (let k = 0; k < N - i; k++) 
                     line += '&nbsp;';
                 for (let k = 0; k < 2 * i + 1; k++)
                     line += '*';
                 diamond += line + '<br>';
             }
-            let resultTag = document.getElementById('result')
+            let resultTag = document.getElementById('result');
             resultTag.innerHTML = diamond;
         }
     </script>
