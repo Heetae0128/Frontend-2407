@@ -1,5 +1,5 @@
 // 구구단
-for (let i = 2; i < 10; i ++) {
+for (let i = 2; i < 10; i++) {
     for (let k = 1; k < 10; k++) { 
         console.log(`${i} x ${k} = ${i*k}`);
     }
