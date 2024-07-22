@@ -19,7 +19,7 @@ function area() {
 
 // 복합 대입 연산자
 let a = 0, str = '';
-a +=1; a += 2; a +=3;           // a <- a + 1;
+a += 1; a += 2; a += 3;           // a <- a + 1;
 console.log(a);
 str += 'A quick brown fox ';        // str <- str + 'A quick brown fox '
 str += 'jumps over the lazy dog.';
