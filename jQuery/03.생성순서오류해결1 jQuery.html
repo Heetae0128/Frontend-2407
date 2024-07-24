@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>생성순서 오류 해결 1</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script> 
+        window.onload = () => {
+        $('body').css('backgroundColor', 'yellow')
+        $('#value1').text('Header 1').css('color', 'red')
+        $('#value2').text('Header 2').css('color', 'black')
+        }
+    </script>
+</head>
+<body>
+    <h1 id="value1"></h1>
+    <h1 id="value2"></h1>
+</body>
+</html>
