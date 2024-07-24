@@ -6,15 +6,18 @@
     <title>디지털 시계(그래픽 버전)</title>
     <style>
         img { width: 100px; }
-        span { font-size: 100px; margin-right: 10px; }
+        span { font-size: 60px; margin-right: 10px; }
     </style>
     <script>
         function twoDigit(num) {
             return num < 10 ? '0' + num : String(num);      // 4 --> '04', 15 --> '15'
         }
         function myDate(now) {
+            return `${now.getFullYear()}-${twoDigit(now.getMonth() + 1)}-${twoDigit(now.getDate())}`;
+        }
+        function myYoil(now) {
             const week = '일월화수목금토'.split('');
-            return `${now.getFullYear()}-${twoDigit(now.getMonth() + 1)}-${twoDigit(now.getDate())}(${week[now.getDay() % 7]})`;
+            return `(${week[now.getDay() % 7]})`
         }
         function myTime(now) {
             return `${twoDigit(now.getHours())}:${twoDigit(now.getMinutes())}:${twoDigit(now.getSeconds())}`;
@@ -32,19 +35,21 @@
                 document.getElementById('day1').src = `img2/${dateStr[8]}.jpg`;
                 document.getElementById('day2').src = `img2/${dateStr[9]}.jpg`;
 
+                let yoilStr = myYoil(now);
+                document.getElementById('yoil').textContent = yoilStr;
+                
                 let timeStr = myTime(now);
-                // document.getElementById('time').innerHTML = timeStr;
                 document.getElementById('h1').src = `img2/${timeStr[0]}.jpg`;
                 document.getElementById('h2').src = `img2/${timeStr[1]}.jpg`;
                 document.getElementById('m1').src = `img2/${timeStr[3]}.jpg`;
                 document.getElementById('m2').src = `img2/${timeStr[4]}.jpg`;
                 document.getElementById('s1').src = `img2/${timeStr[6]}.jpg`;
-                document.querySelector('#s2').src = `img2/${timeStr[7]}.jpg`;
+                document.getElementById('s2').src = `img2/${timeStr[7]}.jpg`;
             }, 1000);
         }
     </script>
 </head>
-<body style="margin: 40px;">
+<body style="margin: 5px;">
     <img id="y1">
     <img id="y2">
     <img id="y3">
@@ -56,14 +61,15 @@
     <img id="day1">
     <img id="day2">
     <span>일</span>
+    <span id="yoil"></span>
     <hr><br>
     <!-- <h1 id="time"></h1> -->
     <img id="h1">
     <img id="h2">
-    <img src="img/Colon.jpg">
+    <img src="img2/Colon.jpg">
     <img id="m1">
     <img id="m2">
-    <img src="img/Colon.jpg">
+    <img src="img2/Colon.jpg">
     <img id="s1">
     <img id="s2">
 </body>
