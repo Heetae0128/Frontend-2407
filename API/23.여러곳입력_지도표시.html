@@ -6,20 +6,119 @@
     <title>여러곳 입력받아 지도에 표시하기</title>
     <style>
         input, button { padding: 5px; margin-right: 10px; }
+        .map-container { margin-top: 20px; }
+        .map-box { width: 800px; height: 600px; }
     </style>
+    <script src="key.js"></script>
+    <script>
+        window.onload = () => {
+            const kakaoScript = document.createElement('script');
+            kakaoScript.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoJsKey}&autoload=false`;
+            kakaoScript.onload = () => {
+                kakao.maps.load(() => {
+                    // This function will be executed when the Kakao Maps API script is loaded
+                });
+            };
+            document.head.appendChild(kakaoScript);
+        };
+
+        function handleMaps() {
+            let places = [];
+            for (let i = 1; i <= 5; i++) {
+                let place = document.getElementById(`input${i}`).value.trim();
+                if (place) {
+                    places.push(place);
+                }
+            }
+
+            if (places.length === 0) {
+                alert('최소 하나의 장소를 입력해주세요.');
+                return;
+            }
+
+            let kakaoBaseUrl = 'https://dapi.kakao.com/v2/local/search/address.json';
+            let header = { Authorization: `KakaoAK ${kakaoRestKey}` };   
+
+            // Initialize map
+            let container = document.getElementById('map');
+            let options = { 
+                center: new kakao.maps.LatLng(37.5665, 126.978), // Default center
+                level: 7 
+            };
+            let map = new kakao.maps.Map(container, options);
+
+            // Clear previous markers
+            map.markers = [];
+
+            // Clear previous list
+            let list = document.getElementById('list');
+            list.innerHTML = '';
+
+            // Fetch and display each place
+            places.forEach(place => {
+                let kakaoUrl = `${kakaoBaseUrl}?query=${encodeURIComponent(place)}`;
+
+                fetch(kakaoUrl, { headers: header })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.documents.length === 0) {
+                            alert(`"${place}"의 위치를 찾을 수 없습니다.`);
+                            return;
+                        }
+
+                        let lat = parseFloat(result.documents[0].y);
+                        let lon = parseFloat(result.documents[0].x);
+                        let position = new kakao.maps.LatLng(lat, lon);
+
+                        // Create marker
+                        let marker = new kakao.maps.Marker({
+                            map: map,
+                            position: position
+                        });
+                        map.markers.push(marker);
+
+                        // Create info window
+                        let infowindow = new kakao.maps.InfoWindow({
+                            content: `<div style="padding:5px;">${place}</div>`
+                        });
+                        kakao.maps.event.addListener(marker, 'mouseover', () => {
+                            infowindow.open(map, marker);
+                        });
+                        kakao.maps.event.addListener(marker, 'mouseout', () => {
+                            infowindow.close();
+                        });
+
+                        // Add place to list
+                        let listItem = document.createElement('li');
+                        listItem.innerHTML = `${place}: <a href="https://map.kakao.com/?q=${encodeURIComponent(place)}" target="_blank">지도 보기</a>`;
+                        list.appendChild(listItem);
+
+                        // Adjust map bounds
+                        let bounds = new kakao.maps.LatLngBounds();
+                        map.markers.forEach(marker => {
+                            bounds.extend(marker.getPosition());
+                        });
+                        map.setBounds(bounds);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        alert('위치 정보를 가져오는 데 실패했습니다.');
+                    });
+            });
+        }
+    </script>
 </head>
-<body style="margin: 40px;">
+<body>
     <h3>여러곳 입력받아 지도에 표시하기</h3>
     <hr>
     <input type="text" id="input1" placeholder="장소명을 입력하세요">
-    <input type="text" id="input1" placeholder="장소명을 입력하세요">
-    <input type="text" id="input1" placeholder="장소명을 입력하세요">
-    <input type="text" id="input1" placeholder="장소명을 입력하세요">
-    <input type="text" id="input1" placeholder="장소명을 입력하세요">
+    <input type="text" id="input2" placeholder="장소명을 입력하세요">
+    <input type="text" id="input3" placeholder="장소명을 입력하세요">
+    <input type="text" id="input4" placeholder="장소명을 입력하세요">
+    <input type="text" id="input5" placeholder="장소명을 입력하세요">
     <button onclick="handleMaps()">지도에 표시하기</button>
     <hr>
-    <ul id="list">
-    </ul>
-    <div id="map" style="width:800px; height:600px; margin-top: 20px;"></div>
+    <ul id="list"></ul>
+    <div id="map" class="map-box"></div>
 </body>
 </html>

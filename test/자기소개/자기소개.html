@@ -5,69 +5,190 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>자기소개</title>
     <script>
-        const btn1 = document.getElementById('btn5');
-            btn5.addEventListener('mouseover', () => {
-                const img = document.createElement('img');
-                img.src = '공주지도.';
-                img.width = 360;
-                img.style.display = 'block'; img.style.marginTop = '20px';
-                document.body.appendChild(img);
-            });
-            btn5.addEventListener('mouseout', () => {
-                const img = document.querySelector('img');
-                document.body.removeChild(img);
-            });
+        function twoDigit(num) {
+            return num < 10 ? '0' + num : String(num);
+        }
+        function formatDate(now) {
+            return `${now.getFullYear()}-${twoDigit(now.getMonth() + 1)}-${twoDigit(now.getDate())}`;
+        }
+        function getDayOfWeek(now) {
+            const days = ['일', '월', '화', '수', '목', '금', '토'];
+            return days[now.getDay()];
+        }
+        function formatTime(now) {
+            return `${twoDigit(now.getHours())}:${twoDigit(now.getMinutes())}:${twoDigit(now.getSeconds())}`;
+        }
+        function updateDateTime() {
+            let now = new Date();
+            document.getElementById('date').textContent = formatDate(now);
+            document.getElementById('day-of-week').textContent = `(${getDayOfWeek(now)})`;
+            document.getElementById('time').textContent = formatTime(now);
+        }
+        function drawMap(place, lat, lon) {
+            let container = document.getElementById('map');
+            let position = new kakao.maps.LatLng(lat, lon);
+            let options = { center: position, level: 3 };
+            let map = new kakao.maps.Map(container, options);
+            let marker = new kakao.maps.Marker({ map: map, position: position });
+            let infowindow = new kakao.maps.InfoWindow({ content: `<div style="padding:5px;">'여기는 공주'</div>` });
+            kakao.maps.event.addListener(marker, 'mouseover', () => infowindow.open(map, marker));
+            kakao.maps.event.addListener(marker, 'mouseout', () => infowindow.close());
+        }
+        window.onload = () => {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+
+            const kakaoScript = document.createElement('script');
+            kakaoScript.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=키값=false`;
+            kakaoScript.onload = () => {
+                kakao.maps.load(() => {
+                    let place = '공주';
+                    let roadBaseUrl = 'https://business.juso.go.kr/addrlink/addrLinkApi.do';
+                    let kakaoBaseUrl = 'https://dapi.kakao.com/v2/local/search/address.json';
+                    let params1 = 'currentPage=1&countPerPage=5';
+                    let params2 = `keyword=${encodeURIComponent(place)}`;
+                    let params3 = `confmKey=키값&resultType=json`; 
+                    let roadUrl = `${roadBaseUrl}?${params1}&${params2}&${params3}`;
+
+                    fetch(roadUrl)
+                        .then(response => response.json())
+                        .then(result => {
+                            let roadAddr = result.results.juso[0].roadAddr;
+                            document.getElementById('place').innerHTML = roadAddr;
+                            let kakaoUrl = `${kakaoBaseUrl}?query=${encodeURIComponent(roadAddr)}`;
+                            let header = { Authorization: `KakaoAK 키값` }; 
+                            return fetch(kakaoUrl, { headers: header });
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            let lat = parseFloat(result.documents[0].y);
+                            let lon = parseFloat(result.documents[0].x);
+                            document.getElementById('lat').innerHTML = '' + lat;
+                            document.getElementById('lon').innerHTML = String(lon);
+                            drawMap('place', lat, lon);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            alert('정보를 가져오는 데 오류가 발생했습니다.');
+                        });
+                });
+            };
+            document.head.appendChild(kakaoScript);
+        };
     </script>
     <style>
-        table { font-family: arial, sans-serif; border-collapse: collapse; width: 100%; border-radius: 2px; }
-        a:link { color: green; background-color: transparent; text-decoration: none; }
-        th { padding: 50px; border: 4px solid black; margin: 40px; }
-        h1 { font-size:50px; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            height: 700px;
+            background-color: blanchedalmond;
+        }
+        .date-time-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .date, .day-of-week, .clock {
+            margin: 10px;
+        }
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            border-radius: 2px;
+            margin: 40px auto;
+            background-color: beige;
+            border: 4px solid black;
+        }
+        a:link {
+            background-color: transparent;
+            text-decoration: none;
+        }
+        th {
+            padding: 50px;
+        }
+        h1 {
+            font-size: 50px;
+            padding: 10px;
+            margin-bottom: 50px;
+        }
         .list {
-        background-color: beige;
-        color: black;
-        border: 2px solid black;
-        margin: 40px;
-        padding: 60px;}
+            background-color: beige;
+            color: black;
+            border: 2px solid black;
+            margin: 40px;
+            padding: 20px;
+            display: inline-block;
+            width: calc(100% - 80px);
+        }
+        .list img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .col-6 {
+            flex: 1;
+            padding: 10px;
+        }
     </style>
 </head>
-<body style="margin: 40px; height: 700px; background-color: blanchedalmond;">
-    <h1 style="padding: 10px; width: 100%; text-align: center; margin-bottom: 50px;">자 기 소 개</h1>
-    <table  style="background-color: beige; margin: 40px; border: 4px solid black;">
+<body>
+    <h1 style="text-align: center;">자기소개</h1>
+    <hr>
+    <div class="date-time-container">
+        <div class="date" id="date"></div>
+        <div class="day-of-week" id="day-of-week"></div>
+        <div class="clock" id="time" style="font-size: 40px;"></div>
+    </div>
+    <table>
         <tr>
-            <ul>
-                <th><li><a href="#고향">고향</a></li></th>    
-                <th><li><a href="#가봤던 곳">가봤던 곳 </a></li></th>
-                <th><li><a href="#좋아하는 음식">좋아하는 음식</a></li></th>
-                <th><li><a href="#취미">내가 좋아하는 것(취미)</a></li></th> 
-            </ul>   
+            <th><a href="#고향">고향</a></th>    
+            <th><a href="#가봤던-곳">가봤던 곳</a></th>
+            <th><a href="#좋아하는-음식">좋아하는 음식</a></th>
+            <th><a href="#취미">내가 좋아하는 것(취미)</a></th>
         </tr>
     </table>
-
-    <div class="list" style="width: 30%;">
-        <h2 id="고향" style="margin-left: 20px;">
-            <a id="btn1">고향</a></h2>
-            <p>저는 서울에서 태어났지만 가장 긴 시간을 보낸 지역이 공주입니다.<br><br>
-                밤막걸리로 아주 유명한 지역이죠!</p><br><br>
-            <img src="밤막걸리.jpg" alt="">
+    <div class="row">
+        <div class="col-6">
+            <div class="list" id="고향" style="width: 70%;">
+                <h2>고향</h2>
+                <p>저는 서울에서 태어났지만 가장 긴 시간을 보낸 지역이 공주입니다.<br><br>
+                    밤막걸리로 아주 유명한 지역이죠!</p>
+                <img src="밤막걸리.jpg" alt="밤막걸리">
             </div>
-            <div class="list">
-        <h2 id="가봤던 곳" style="margin-left: 20px;">가봤던 곳</h2>
-            <p>얼마전 보홀을 다녀왔습니다.<br><br>
-                호핑으로 유명한 보홀은 바다색이 정말 아름답습니다.</p><br><br>
-                <img src="보홀.jfif" width="500" height="500" style="margin-right: 100px;" alt=""> 
-                <img src="고래상어.jpg" width="1000" height="500" alt=""> 
-            </div>
-            <div class="list" style="width: 30%;">
-        <h2 id="좋아하는 음식" style="margin-left: 20px;">좋아하는 음식</h2>
-            <p>먹는것 자체를 좋아하지만 고기류를 좋아합니다.</p><br><br>
-            <img src="소고기.jpg" width="500" height="500" alt="">
         </div>
-        <div class="list" style="width: 30%;">
-        <h2 id="취미" style="margin-left: 20px;">내가 좋아하는 것(취미)</h2>
-            <p>게임, 요리, 숨쉬기</p><br><br>
-        <img src="게임.jpg" width="500" height="500" alt="">
-        <img src="요리.jpg" width="500" height="500" alt="">
+        <div class="col-6">
+            <div id="map" style="width:650px; height:500px; margin-top: 100px;"></div>
+            <br><br>
+            <a>도로명주소: <span id="place"></span></a><br>
+            <a>위도: <span id="lat"></span></a><br>
+            <a>경도: <span id="lon"></span></a><br>
+        </div>    
+    </div>    
+    <div class="list" id="가봤던-곳">
+        <h2>가봤던 곳</h2>
+        <p>얼마 전 보홀을 다녀왔습니다.<br><br>
+            호핑으로 유명한 보홀은 바다색이 정말 아름답습니다.</p>
+        <img src="보홀.jfif" alt="보홀"> 
+        <img src="고래상어.jpg" alt="고래상어"> 
+    </div>
+    <div class="list" id="좋아하는-음식" style="width: 35%;">
+        <h2>좋아하는 음식</h2>
+        <p>먹는 것 자체를 좋아하지만 고기류를 좋아합니다.</p>
+        <img src="소고기.jpg" alt="소고기">
+    </div>
+    <div class="list" id="취미" style="width: 35%;">
+        <h2>내가 좋아하는 것(취미)</h2>
+        <p>게임, 요리, 숨쉬기</p>
+        <img src="게임.jpg" alt="게임">
+        <img src="요리.jpg" alt="요리">
     </div>
 </body>
 </html>
