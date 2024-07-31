@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>날씨 정보</title>
+    <script src="key.js"></script>
+</head>
+<body>
+    <img class="icon">
+    <button class="button" type="button">현재 날씨는?</button>
+    <ul>
+        <li class="temperature">기온</li>
+        <li class="place">위치</li>
+        <li class="description">설명</li>
+    </ul>
+    <script>
+        const button = document.querySelector('.button');
+        const tempSection = document.querySelector('.temperature');
+        const placeSection = document.querySelector('.place');
+        const descSection = document.querySelector('.description');
+
+        button.addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, fail);
+            } else {
+                alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
+            }
+        });
+
+        const success = (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            console.log(position);
+            getWeather(latitude, longitude);
+        }
+
+        const fail = () => {
+            alert("좌표를 받아올 수 없습니다.");
+        }
+
+        const iconSection = document.querySelector('.icon');
+
+        const getWeather = (lat, lon) => {
+            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${openWeather}&units=metric&lang=kr`)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((json) => {
+                    const icon = json.weather[0].icon;
+                    const iconURL = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+
+                    iconSection.setAttribute('src', iconURL);
+                    const temperature = json.main.temp;
+                    const place = json.name;
+                    const description = json.weather[0].description;
+
+                    tempSection.innerText = `온도: ${temperature}°C`;
+                    placeSection.innerText = `위치: ${place}`;
+                    descSection.innerText = `설명: ${description}`;
+                    console.log(json);
+                })
+                .catch((error) => {
+                    alert(`오류가 발생했습니다: ${error.message}`);
+                });
+        }
+    </script>
+</body>
+</html>
